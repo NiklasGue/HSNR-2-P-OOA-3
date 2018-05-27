@@ -7,17 +7,27 @@
 
 #include "Execption.h"
 
+template <class T>
+class Entry {
+public:
+    T _value;
+    Entry<T> *_next;
+    Entry(T value) {
+        _value = value;
+        _next = nullptr;
+    }
+};
 
 template <class T>
 class List{
 private:
-    Entry<T> *_head, *_tail;
+    Entry<T> *_head;
+    Entry<T> *_tail;
     unsigned int listSize;
 public:
-
-
     List<T>(){
         _head = nullptr;
+        _tail = nullptr;
         listSize = 0;
     }
 
@@ -25,14 +35,12 @@ public:
         return listSize;
     }
 
-    T getValueAtPos(unsigned int pos){
-        Entry<T> *referenceEntry;
+    T getValueAtPos(unsigned int pos){ //TODD: ueberpruefen
+        Entry<T> *referenceEntry = _head;
         unsigned int count;
 
         if(listSize < pos)
             throw MyExecption("Error: Out of bounds.");
-
-        referenceEntry = _head;
 
         do {
             referenceEntry = referenceEntry->_next;
@@ -45,6 +53,7 @@ public:
         Entry<T> *entry = new Entry<T>(value);
         if(!listSize){
             _head = entry;
+            _tail = entry;
         } else {
             _tail->_next = entry;
             _tail = entry;
@@ -61,17 +70,6 @@ public:
     }
 */
 
-};
-
-template <class T>
-class Entry {
-public:
-    T _value;
-    Entry<T> *_next;
-    Entry(T value) {
-        _value = value;
-        _next = nullptr;
-    }
 };
 
 #endif //OOA3_LIST_H

@@ -1,17 +1,15 @@
 //
 // Created by hartings on 26.05.18.
 //
-
-
 #include "Node.h"
 #include "Execption.h"
 
 
-Node::Node(string key, int posX = 1, int posY = 1) {
+Node::Node(string key, int posX, int posY) {
     _key = key;
     _posX = posX;
     _posY = posY;
-    _edgeList = new List<Edge *>();
+    _edgeList = List<Edge *>();
 }
 
 string Node::getKey(void){
@@ -26,7 +24,7 @@ int Node::getPosY(void) {
 }
 
 List<Edge *> Node::getEdges(void) {
-    return *_edgeList;
+    return _edgeList;
 }
 
 void Node::setKey(string newKey) {
@@ -39,5 +37,34 @@ void Node::setPosY(int pos) {
     _posY = pos;
 }
 void Node::setNewEdge(Edge * edge) {
-    _edgeList->insertNewEntry(edge);
+    _edgeList.insertNewEntry(edge);
+}
+
+Edge::Edge(float weight, Node *startNode, Node *endNode) {
+    _weight = weight;
+    _startNode = startNode;
+    _endNode = endNode;
+}
+
+float Edge::getWeight(void) {
+    return _weight;
+}
+
+Node *Edge::getStartNode(void) {
+    return _startNode;
+}
+
+Node *Edge::getEndNode(void) {
+    return _endNode;
+}
+
+void Edge::setWeight(float weight) {
+    _weight = weight;
+}
+void Edge::setStartNode(Node *startNode) { //todo: aus Edgeliste des Elements entferenen und in neue Edgeliste einfügen....
+    throw MyExecption("Not yet implemented");
+    _startNode = startNode;
+}
+void Edge::setEndNode(Node * endNode) {
+    _endNode = endNode;
 }

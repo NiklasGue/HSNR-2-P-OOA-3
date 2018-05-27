@@ -2,24 +2,22 @@
 // Created by hartings on 23.05.18.
 //
 
-#include "SFMLGraphVisualizer.h"
-#include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp >
 #include <sstream>
 #include <math.h>
-#include "DiGraph.h"
+#include "SFMLGraphVisualizer.h"
 
 #define NODERADIUS 30
 using namespace std;
 
 
 SFMLGraphVisualizer::SFMLGraphVisualizer() {
-    this->font.loadFromFile("arial.ttf"); //TODO: Is font loading correctly?
+    this->font.loadFromFile("../FreeMono.ttf");
 }
 
 void SFMLGraphVisualizer::visualize(DiGraph &graph) {
-    window.create(sf::VideoMode(1024, 768), "myGraph");
-    List <Node *> nodes = graph.getAllNodes();
+
+    window.create(sf::VideoMode(1024, 768), "Graph Window");
+    List <Node *> allNodes = graph.getAllNodes();
 
     while (window.isOpen()) {
         sf::Event event;
@@ -29,13 +27,13 @@ void SFMLGraphVisualizer::visualize(DiGraph &graph) {
     }
 
     window.clear(sf::Color::White);
-    for (unsigned int i = 0; i < nodes.size(); i++) {
-        Node *node = nodes.getValueAt(i);
+    for (unsigned int i = 0; i < allNodes.getListSize(); i++) {
+        Node *node = allNodes.getValueAtPos(i);
         sf::Color color(255, 0, 0);
-        List < Edge * > edges = g.getEdges(node->getKey());
+        List <Edge *> allEdges = graph.getAllEdgesOfNode(node->getKey());
 
-        for (unsigned int j = 0; j < edges.size(); j++) {
-            drawEdge(*(edges.getValueAt(j)), sf::Color::Black, edges.getValueAt(j)->getWeight(), 1);
+        for (unsigned int j = 0; j < allEdges.getListSize(); j++) {
+            drawEdge(*(allEdges.getValueAtPos(j)), sf::Color::Black, allEdges.getValueAtPos(j)->getWeight(), 1);
         }
     }
     window.display();
@@ -43,7 +41,7 @@ void SFMLGraphVisualizer::visualize(DiGraph &graph) {
 
 void SFMLGraphVisualizer::drawNode(Node &node, sf::Color nodeColor) {
     sf::CircleShape Circle(NODERADIUS);
-    Circle.setPosition(node.getPositionX() - NODERADIUS, node.getPositionY() - NODERADIUS);
+    Circle.setPosition(node.getPosX() - NODERADIUS, node.getPosY() - NODERADIUS);
     Circle.setFillColor(sf::Color::White);
     Circle.setOutlineColor(nodeColor);
     Circle.setOutlineThickness(5);
@@ -51,15 +49,15 @@ void SFMLGraphVisualizer::drawNode(Node &node, sf::Color nodeColor) {
     window.draw(Circle);
 
     sf::Text Label(node.getKey(), font, 32);
-    Label.setPosition(node.getPositionX() - NODERADIUS / 2 + 5, node.getPositionY() - NODERADIUS / 2 - 5);
-    Label.setFillColor(sf::Color::Blue);
+    Label.setPosition(node.getPosX() - NODERADIUS / 2 + 5, node.getPosY() - NODERADIUS / 2 - 5);
+    //Label.setFillColor(sf::Color::Blue);
 
     window.draw(Label);
 }
 
-void SFMLGraphVisualizer::drawEdge(Edge &edge, sf::Color color, double weight, int thickness = 1, int arrowMagnitude = 20) {
-    sf::Vector2f p(edge.getStartNode()->getPositionX(), edge.getStartNode()->getPositionY());
-    sf::Vector2f q(edge.getEndNode()->getPositionX(), edge.getEndNode()->getPositionY());
+void SFMLGraphVisualizer::drawEdge(Edge &edge, sf::Color color, double weight, int thickness, int arrowMagnitude) {
+    sf::Vector2f p(edge.getStartNode()->getPosX(), edge.getStartNode()->getPosY());
+    sf::Vector2f q(edge.getEndNode()->getPosX(), edge.getEndNode()->getPosY());
 
     // WINKEL BERECHNUNG
     const double PI = 3.141592653;
@@ -86,7 +84,7 @@ void SFMLGraphVisualizer::drawEdge(Edge &edge, sf::Color color, double weight, i
     int size = sqrt(pow(p.x - q.x, 2) + pow(p.y - q.y, 2));
     Labelweight.setPosition(p.x - (size / 2) * cos(angle) + 10 * sin(angle),
                             p.y - (size / 2) * sin(angle) + 10 * cos(angle));
-    Labelweight.setFillColor(sf::Color::Blue);
+    //Labelweight.setFillColor(sf::Color::Blue);
     window.draw(Labelweight);
 
 // Erstes  Segment
