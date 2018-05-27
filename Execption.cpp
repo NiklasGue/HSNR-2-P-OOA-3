@@ -4,14 +4,14 @@
 
 #include "Execption.h"
 
-Execption::Execption() {
+MyExecption::MyExecption() {
     _message = "Error: No error message specified";
 }
 
-Execption::Execption(std::string errorMessage) {
+MyExecption::MyExecption(std::string errorMessage) {
 _message = errorMessage;
 }
 
-std::string Execption::getMessage() {
+std::string MyExecption::getMessage() {
     return _message;
 }

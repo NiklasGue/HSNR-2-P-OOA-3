@@ -7,18 +7,19 @@
 #include <SFML/Window.hpp >
 #include <sstream>
 #include <math.h>
+#include "DiGraph.h"
 
 #define NODERADIUS 30
 using namespace std;
 
 
 SFMLGraphVisualizer::SFMLGraphVisualizer() {
-    this->font.loadFromFile("arial.ttf");
+    this->font.loadFromFile("arial.ttf"); //TODO: Is font loading correctly?
 }
 
 void SFMLGraphVisualizer::visualize(DiGraph &graph) {
     window.create(sf::VideoMode(1024, 768), "myGraph");
-    Liste < Node * > nodes = graph.getNodes();
+    List <Node *> nodes = graph.getAllNodes();
 
     while (window.isOpen()) {
         sf::Event event;
@@ -31,7 +32,7 @@ void SFMLGraphVisualizer::visualize(DiGraph &graph) {
     for (unsigned int i = 0; i < nodes.size(); i++) {
         Node *node = nodes.getValueAt(i);
         sf::Color color(255, 0, 0);
-        Liste < Edge * > edges = g.getEdges(node->getKey());
+        List < Edge * > edges = g.getEdges(node->getKey());
 
         for (unsigned int j = 0; j < edges.size(); j++) {
             drawEdge(*(edges.getValueAt(j)), sf::Color::Black, edges.getValueAt(j)->getWeight(), 1);

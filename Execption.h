@@ -7,12 +7,12 @@
 
 #include <string>
 
-class Execption {
+class MyExecption {
 private:
     std::string _message;
 public:
-    Execption();
-    Execption(std::string errorMessage);
+    MyExecption();
+    MyExecption(std::string errorMessage);
     std::string getMessage();
 
 };

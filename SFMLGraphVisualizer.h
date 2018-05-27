@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include "DiGraph.h"
 
 class SFMLGraphVisualizer {
 private:
