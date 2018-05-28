@@ -9,7 +9,7 @@ Node::Node(string key, int posX, int posY) {
     _key = key;
     _posX = posX;
     _posY = posY;
-    _edgeList = List<Edge *>();
+    _edgeList = new List<Edge>();
 }
 
 string Node::getKey(void){
@@ -23,8 +23,8 @@ int Node::getPosY(void) {
     return _posY;
 }
 
-List<Edge *> Node::getEdges(void) {
-    return _edgeList;
+List<Edge> Node::getEdges(void) {
+    return *_edgeList;
 }
 
 void Node::setKey(string newKey) {
@@ -37,7 +37,7 @@ void Node::setPosY(int pos) {
     _posY = pos;
 }
 void Node::setNewEdge(Edge * edge) {
-    _edgeList.insertNewEntry(edge);
+    _edgeList->insertNewEntry(edge);
 }
 
 Edge::Edge(float weight, Node *startNode, Node *endNode) {

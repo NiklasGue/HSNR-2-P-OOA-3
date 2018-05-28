@@ -6,13 +6,15 @@
 #define OOA3_LIST_H
 
 #include "Execption.h"
+#include <iostream>
+using namespace std;
 
 template <class T>
 class Entry {
 public:
-    T _value;
+    T *_value;
     Entry<T> *_next;
-    Entry(T value) {
+    Entry(T *value) {
         _value = value;
         _next = nullptr;
     }
@@ -35,41 +37,36 @@ public:
         return listSize;
     }
 
-    T getValueAtPos(unsigned int pos){ //TODD: ueberpruefen
-        Entry<T> *referenceEntry = _head;
-        unsigned int count;
+    T* getValueAtPos(unsigned int pos){ //TODD: ueberpruefen
+        Entry<T> *referenceEntry;
+        referenceEntry = _head;
+        unsigned int count = 0;
 
         if(listSize < pos)
             throw MyExecption("Error: Out of bounds.");
 
-        do {
+        while (count < pos) {
             referenceEntry = referenceEntry->_next;
             count++;
-        } while (count < pos);
+        }
         return referenceEntry->_value;
     }
 
-    void insertNewEntry(T value){
+    void insertNewEntry(T *value){
         Entry<T> *entry = new Entry<T>(value);
-        if(!listSize){
+        if(_head == nullptr){
             _head = entry;
             _tail = entry;
         } else {
             _tail->_next = entry;
             _tail = entry;
         }
-        listSize++;
+        listSize += 1;
     }
 
    T getHeadElement(void) {
         return _head;
     }
-    /*
-    T getTailElement(void) {
-        return _tail;
-    }
-*/
-
 };
 
 #endif //OOA3_LIST_H

@@ -5,8 +5,10 @@
 #include <sstream>
 #include <math.h>
 #include "SFMLGraphVisualizer.h"
+#include <iostream>
+#include "Node.h"
 
-#define NODERADIUS 30
+#define NODERADIUS 10
 using namespace std;
 
 
@@ -16,27 +18,30 @@ SFMLGraphVisualizer::SFMLGraphVisualizer() {
 
 void SFMLGraphVisualizer::visualize(DiGraph &graph) {
 
-    window.create(sf::VideoMode(1024, 768), "Graph Window");
-    List <Node *> allNodes = graph.getAllNodes();
+    window.create(sf::VideoMode(1024, 1024), "Graph Window");
+    List<Node> allNodes = graph.getAllNodes();
 
     while (window.isOpen()) {
         sf::Event event;
-        if (event.type == sf::Event::Closed) {
-            window.close();
-        }
-    }
 
-    window.clear(sf::Color::White);
-    for (unsigned int i = 0; i < allNodes.getListSize(); i++) {
-        Node *node = allNodes.getValueAtPos(i);
-        sf::Color color(255, 0, 0);
-        List <Edge *> allEdges = graph.getAllEdgesOfNode(node->getKey());
-
-        for (unsigned int j = 0; j < allEdges.getListSize(); j++) {
-            drawEdge(*(allEdges.getValueAtPos(j)), sf::Color::Black, allEdges.getValueAtPos(j)->getWeight(), 1);
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
         }
+
+        window.clear(sf::Color::White);
+
+        for (int i = 0; i < allNodes.getListSize(); i++) {
+            Node *node = allNodes.getValueAtPos(i);
+            sf::Color color(255, 0, 0);
+            drawNode(*node, color);
+            List<Edge> allEdges = graph.getAllEdgesOfNode(node->getKey());
+            for (unsigned int j = 0; j < allEdges.getListSize(); j++) {
+                drawEdge(*(allEdges.getValueAtPos(j)), sf::Color::Black, allEdges.getValueAtPos(j)->getWeight(), 1);
+            }
+        }
+        window.display();
     }
-    window.display();
 }
 
 void SFMLGraphVisualizer::drawNode(Node &node, sf::Color nodeColor) {
@@ -50,7 +55,7 @@ void SFMLGraphVisualizer::drawNode(Node &node, sf::Color nodeColor) {
 
     sf::Text Label(node.getKey(), font, 32);
     Label.setPosition(node.getPosX() - NODERADIUS / 2 + 5, node.getPosY() - NODERADIUS / 2 - 5);
-    //Label.setFillColor(sf::Color::Blue);
+    Label.setColor(sf::Color::Blue);
 
     window.draw(Label);
 }
@@ -84,7 +89,7 @@ void SFMLGraphVisualizer::drawEdge(Edge &edge, sf::Color color, double weight, i
     int size = sqrt(pow(p.x - q.x, 2) + pow(p.y - q.y, 2));
     Labelweight.setPosition(p.x - (size / 2) * cos(angle) + 10 * sin(angle),
                             p.y - (size / 2) * sin(angle) + 10 * cos(angle));
-    //Labelweight.setFillColor(sf::Color::Blue);
+    Labelweight.setColor(sf::Color::Blue);
     window.draw(Labelweight);
 
 // Erstes  Segment

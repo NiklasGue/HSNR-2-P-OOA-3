@@ -15,13 +15,13 @@ class Node {
 private:
     string _key;
     int _posX, _posY;
-    List<Edge *> _edgeList;
+    List<Edge> *_edgeList;
 public:
     Node(string key, int posX, int PosY);
     string getKey(void);
     int getPosX(void);
     int getPosY(void);
-    List<Edge *> getEdges(void);
+    List<Edge> getEdges(void);
     void setKey(string newKey);
     void setPosX(int pos);
     void setPosY(int pos);
